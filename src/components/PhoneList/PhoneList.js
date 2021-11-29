@@ -1,15 +1,22 @@
 import PropTypes from "prop-types";
 import PhoneItem from "../PhoneItem/PhoneItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectContactItem,
   selectFilter,
 } from "../../redux/contacts/selectors/selectors";
+import { getPhoneContact } from "../../redux/contacts/AsyncOperation/asyncOperation";
 import css from "../PhoneList/PhoneList.module.css";
+import { useEffect } from "react";
 
 const CreateContactList = ({ title }) => {
+  const dispatch = useDispatch();
   const listConcacts = useSelector(selectContactItem);
   const payload = useSelector(selectFilter);
+
+  useEffect(() => {
+    dispatch(getPhoneContact());
+  }, [dispatch]);
 
   const filterContact = () => {
     return listConcacts.filter(({ name }) =>

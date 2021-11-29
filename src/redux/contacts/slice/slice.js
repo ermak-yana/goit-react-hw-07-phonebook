@@ -4,19 +4,57 @@ import { combineReducers } from "redux";
 const contacts = createSlice({
   name: "contacts",
   initialState: {
-    items: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
+    isLoading: false,
+    items: [],
+    error: null,
   },
   reducers: {
-    addContact: (state, action) => ({
+    fetchContact: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    fetchContactResolve: (state, action) => ({
+      ...state,
+      isLoading: false,
+      items: action.payload,
+    }),
+    fetchContactReject: (state, action) => ({
+      ...state,
+      isLoading: false,
+      items: [],
+      error: action.payload,
+    }),
+
+    fetchAddContact: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    fetchAddContactResolve: (state, action) => ({
+      ...state,
+      isLoading: false,
       items: [...state.items, action.payload],
     }),
-    removeContact: (state, action) => ({
+    fetchAddContactReject: (state, action) => ({
+      ...state,
+      isLoading: false,
+      items: [],
+      error: action.payload,
+    }),
+
+    fetchRemoveContact: (state) => ({
+      ...state,
+      isLoading: true,
+    }),
+    fetchRemoveContactResolve: (state, action) => ({
+      ...state,
+      isLoading: false,
       items: state.items.filter(({ id }) => id !== action.payload),
+    }),
+    fetchRemoveContactReject: (state, action) => ({
+      ...state,
+      isLoading: false,
+      items: [],
+      error: action.payload,
     }),
   },
 });
@@ -33,7 +71,17 @@ const filtration = createSlice({
   },
 });
 
-export const { addContact, removeContact } = contacts.actions;
+export const {
+  fetchContact,
+  fetchContactResolve,
+  fetchContactReject,
+  fetchAddContact,
+  fetchAddContactResolve,
+  fetchAddContactReject,
+  fetchRemoveContact,
+  fetchRemoveContactResolve,
+  fetchRemoveContactReject,
+} = contacts.actions;
 export const { filterContacts } = filtration.actions;
 
 export const phoneBook = combineReducers({

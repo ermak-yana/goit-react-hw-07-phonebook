@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "../../redux/contacts/slice/slice";
 import { selectContactItem } from "../../redux/contacts/selectors/selectors";
+import { addContactAsync } from "../../redux/contacts/AsyncOperation/asyncOperation";
 import css from "../FormSubmit/FormSubmit.module.css";
 
 function FormSubmit({ phone, title }) {
@@ -22,7 +21,7 @@ function FormSubmit({ phone, title }) {
 
   const submitContact = (contact) => {
     if (!checkContact(contact.name)) {
-      dispatch(addContact(contact));
+      dispatch(addContactAsync(contact));
     } else {
       alert(`${contact.name} is alredy in contacts`);
     }
@@ -37,7 +36,6 @@ function FormSubmit({ phone, title }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const contact = {
-      id: uuidv4(),
       name,
       number,
     };
